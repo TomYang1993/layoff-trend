@@ -173,7 +173,7 @@ function GoogleTrendsCard() {
               <LineChart
                 data={data.timeline}
                 color={color}
-                xFormat={d => d.date?.split(', ')?.[0]?.replace(/\w+ /, '') || d.date}
+                xFormat={d => d.date?.split(', ')?.[0] || d.date}
               />
             </div>
           )}

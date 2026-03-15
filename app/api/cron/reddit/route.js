@@ -90,11 +90,22 @@ export async function GET(request) {
   try {
     const headers = { 'User-Agent': 'web:layoff-trend:v1.0 (by /u/layoff-trend-bot)' }
 
+    // Debug: test a single fetch first
+    const testRes = await fetch('https://www.reddit.com/r/layoffs/about.json', { headers, cache: 'no-store' })
+    const debugInfo = {
+      testStatus: testRes.status,
+      testHeaders: Object.fromEntries(testRes.headers.entries()),
+    }
+    if (!testRes.ok) {
+      const body = await testRes.text()
+      debugInfo.testBody = body.slice(0, 500)
+      return Response.json({ error: 'Reddit blocked', debug: debugInfo }, { status: 502 })
+    }
+
     const subreddits = []
     for (const name of SUBREDDITS) {
       const result = await fetchSubreddit(name, headers)
       if (result) subreddits.push(result)
-      // Delay between subreddits
       await new Promise(r => setTimeout(r, 1000))
     }
 
@@ -103,7 +114,6 @@ export async function GET(request) {
       fetchedAt: new Date().toISOString(),
     }
 
-    // Store in Redis with 1 hour TTL (cron runs every 30 min so always fresh)
     await redis.set('reddit-data', JSON.stringify(payload), { ex: 3600 })
 
     return Response.json({ ok: true, subreddits: subreddits.length, fetchedAt: payload.fetchedAt })
