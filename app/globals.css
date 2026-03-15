@@ -9,14 +9,16 @@ body {
   background: #1a1a2e;
   color: #eee;
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .container {
   text-align: center;
   padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
 }
 
 .title {
@@ -155,4 +157,92 @@ body {
   font-size: 11px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   text-anchor: middle;
+}
+
+.seo-content {
+  margin-top: 4rem;
+  max-width: 640px;
+  text-align: left;
+  color: #555;
+  font-size: 0.9rem;
+  line-height: 1.7;
+}
+
+.seo-content h1 {
+  font-size: 1.3rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+}
+
+.seo-content p {
+  margin-bottom: 0.75rem;
+}
+
+.faq {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.faq details {
+  background: #1e1e38;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq details[open] {
+  border-color: #3a3a5a;
+}
+
+.faq summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #aaa;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  user-select: none;
+}
+
+.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq summary::after {
+  content: '+';
+  font-size: 1.2rem;
+  color: #666;
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.faq details[open] summary::after {
+  content: '-';
+}
+
+.faq summary:hover {
+  color: #ccc;
+}
+
+.faq details p {
+  padding: 0 16px 14px;
+  margin: 0;
+  color: #666;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+
+.seo-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: #ffa116;
 }

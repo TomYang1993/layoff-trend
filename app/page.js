@@ -116,11 +116,6 @@ export default function Home() {
                 <stop offset="100%" stopColor="#00b8a3" stopOpacity="0" />
               </linearGradient>
             </defs>
-            {/* Y-axis label */}
-            <text x={12} y={pad.top + plotH / 2} className="axis-label-y" transform={`rotate(-90, 12, ${pad.top + plotH / 2})`}>
-              Online
-            </text>
-
             {/* Grid lines & Y ticks */}
             {yTicks.map((tick, i) => (
               <g key={i}>
@@ -149,10 +144,6 @@ export default function Home() {
               </text>
             ))}
 
-            {/* X-axis label */}
-            <text x={pad.left + plotW / 2} y={chartH - 2} className="axis-label-x">
-              Time
-            </text>
           </svg>
         </div>
       )}
@@ -165,6 +156,54 @@ export default function Home() {
         {status === 'connecting' && <>Connecting...</>}
         {status === 'disconnected' && <>Disconnected — reconnecting...</>}
       </div>
+
+      <article className="seo-content">
+        <h1>LeetCode Two Sum Live Online Counter</h1>
+        <p>
+          Track how many people are solving <strong>LeetCode Two Sum</strong> (Problem #1) in real time.
+          This page connects directly to LeetCode's WebSocket server and displays the live count of
+          concurrent users, updated every 10 seconds.
+        </p>
+
+        <div className="faq">
+          <details>
+            <summary>How many people solve Two Sum every day?</summary>
+            <p>
+              Two Sum is the most attempted problem on LeetCode with millions of total submissions.
+              At any given moment, hundreds to thousands of developers are actively working on it —
+              from first-time coders to engineers preparing for interviews at Google, Meta, Amazon, and other top tech companies.
+            </p>
+          </details>
+
+          <details>
+            <summary>What is the Two Sum problem?</summary>
+            <p>
+              Given an array of integers <code>nums</code> and an integer <code>target</code>,
+              return the indices of two numbers that add up to the target.
+              The optimal solution uses a hash map for O(n) time complexity.
+              It's the classic introduction to data structures and algorithm thinking.
+            </p>
+          </details>
+
+          <details>
+            <summary>Why track live online count?</summary>
+            <p>
+              Seeing real-time activity gives you a sense of the global coding community.
+              Whether it's peak hours in the US, interview season, or a weekend grind session,
+              the live counter shows the pulse of competitive programming worldwide.
+            </p>
+          </details>
+
+          <details>
+            <summary>How does this live counter work?</summary>
+            <p>
+              This page connects directly to LeetCode's collaboration WebSocket server,
+              which broadcasts the number of active users on each problem page.
+              The count updates approximately every 10 seconds with auto-reconnect on connection loss.
+            </p>
+          </details>
+        </div>
+      </article>
     </div>
   )
 }
