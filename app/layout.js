@@ -1,4 +1,4 @@
-import { Analytics } from '@vercel/analytics/react'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata = {
   title: 'LeetCode Two Sum Live Counter | How Many People Are Solving Two Sum Right Now?',
