@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #1a1a2e;
+  color: #eee;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 1.2rem;
+  color: #888;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.problem-name {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffa116;
+  margin-bottom: 2rem;
+}
+
+.count-wrapper {
+  margin-bottom: 2rem;
+}
+
+.count {
+  font-size: 8rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transition: color 0.3s;
+}
+
+.count.connected {
+  color: #00b8a3;
+}
+
+.count.disconnected {
+  color: #ef4743;
+}
+
+.count.connecting {
+  color: #ffa116;
+}
+
+.label {
+  font-size: 1.1rem;
+  color: #888;
+  margin-top: 0.5rem;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 1.5rem;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.dot.connected {
+  background: #00b8a3;
+  box-shadow: 0 0 6px #00b8a3;
+  animation: pulse 2s infinite;
+}
+
+.dot.disconnected {
+  background: #ef4743;
+}
+
+.dot.connecting {
+  background: #ffa116;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.chart-wrapper {
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chart {
+  width: 100%;
+  height: auto;
+}
+
+.chart-line {
+  fill: none;
+  stroke: #00b8a3;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-area {
+  fill: url(#areaGrad);
+  opacity: 0.3;
+}
+
+.chart-dot {
+  fill: #00b8a3;
+  filter: drop-shadow(0 0 4px #00b8a3);
+}
+
+.grid-line {
+  stroke: #333;
+  stroke-width: 0.5;
+  stroke-dasharray: 4 4;
+}
+
+.tick-label {
+  fill: #666;
+  font-size: 10px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.axis-label-x {
+  fill: #888;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  text-anchor: middle;
+}
+
+.axis-label-y {
+  fill: #888;
+  font-size: 11px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  text-anchor: middle;
+}
