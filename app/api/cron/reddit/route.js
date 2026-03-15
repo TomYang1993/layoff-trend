@@ -88,7 +88,7 @@ export async function GET(request) {
   }
 
   try {
-    const headers = { 'User-Agent': 'layoff-trend-tracker/1.0' }
+    const headers = { 'User-Agent': 'web:layoff-trend:v1.0 (by /u/layoff-trend-bot)' }
 
     const subreddits = []
     for (const name of SUBREDDITS) {

@@ -10,7 +10,7 @@ export async function GET(request) {
   }
 
   try {
-    const headers = { 'User-Agent': 'layoff-trend-tracker/1.0' }
+    const headers = { 'User-Agent': 'web:layoff-trend:v1.0 (by /u/layoff-trend-bot)' }
 
     // Just fetch /about.json for each subreddit — 3 lightweight calls
     const results = await Promise.all(
