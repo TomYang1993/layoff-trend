@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react'
+
 export const metadata = {
   title: 'LeetCode Two Sum Live Counter | How Many People Are Solving Two Sum Right Now?',
   description: 'See how many people are solving LeetCode\'s Two Sum problem in real time. Live WebSocket counter with historical chart updated every 10 seconds. The most popular coding interview question tracked live.',
@@ -90,7 +92,10 @@ export default function RootLayout({ children }) {
           }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   )
 }
