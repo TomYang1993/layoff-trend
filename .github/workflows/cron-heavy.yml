@@ -2,21 +2,97 @@ name: Heavy cron (Reddit + Google Trends)
 
 on:
   schedule:
-    - cron: '*/30 * * * *' # every 30 minutes
-  workflow_dispatch: # manual trigger
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
 
 jobs:
-  ping:
+  fetch-data:
     runs-on: ubuntu-latest
     steps:
-      - name: Reddit full data
+      - name: Fetch Reddit data and store in Upstash
         run: |
-          curl -s -o /dev/null -w "reddit: %{http_code}\n" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.SITE_URL }}/api/cron/reddit"
+          node -e "
+          const SUBREDDITS = ['layoffs', 'recruitinghell', 'overemployed'];
+          const headers = { 'User-Agent': 'web:layoff-trend:v1.0 (by /u/layoff-trend-bot)' };
 
-      - name: Google Trends
+          async function fetchAllPosts(name, maxPages = 10) {
+            let posts = [], after = null;
+            for (let i = 0; i < maxPages; i++) {
+              const url = 'https://www.reddit.com/r/' + name + '/new.json?limit=100' + (after ? '&after=' + after : '');
+              const res = await fetch(url, { headers });
+              if (!res.ok) { console.log(name + ' page ' + i + ': HTTP ' + res.status); break; }
+              const data = await res.json();
+              const children = data.data?.children || [];
+              if (!children.length) break;
+              posts = posts.concat(children);
+              after = data.data?.after;
+              if (!after) break;
+              await new Promise(r => setTimeout(r, 500));
+            }
+            return posts;
+          }
+
+          async function fetchSubreddit(name) {
+            const [aboutRes, posts] = await Promise.all([
+              fetch('https://www.reddit.com/r/' + name + '/about.json', { headers }),
+              fetchAllPosts(name),
+            ]);
+            if (!aboutRes.ok) return null;
+            const sub = (await aboutRes.json()).data;
+            const now = Math.floor(Date.now() / 1000);
+            const postsLast24h = posts.filter(p => p.data.created_utc > now - 86400).length;
+            const postsLastWeek = posts.filter(p => p.data.created_utc > now - 604800).length;
+            const dayBuckets = {};
+            posts.forEach(p => {
+              const key = new Date(p.data.created_utc * 1000).toISOString().slice(0, 10);
+              dayBuckets[key] = (dayBuckets[key] || 0) + 1;
+            });
+            const sortedDays = Object.keys(dayBuckets).sort();
+            const dailyPosts = [];
+            if (sortedDays.length > 0) {
+              const start = new Date(sortedDays[0]);
+              const end = new Date(sortedDays[sortedDays.length - 1]);
+              for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                const key = d.toISOString().slice(0, 10);
+                dailyPosts.push({ date: key, value: dayBuckets[key] || 0 });
+              }
+            }
+            return {
+              name: 'r/' + name, subscribers: sub.subscribers, activeUsers: sub.accounts_active,
+              postsLast24h, postsLastWeek, totalFetched: posts.length, dailyPosts,
+              recentPosts: posts.slice(0, 3).map(p => ({
+                title: p.data.title, score: p.data.score, comments: p.data.num_comments,
+                created: p.data.created_utc, url: 'https://reddit.com' + p.data.permalink,
+              })),
+            };
+          }
+
+          async function main() {
+            const subreddits = [];
+            for (const name of SUBREDDITS) {
+              console.log('Fetching ' + name + '...');
+              const result = await fetchSubreddit(name);
+              if (result) { subreddits.push(result); console.log('  -> ' + result.totalFetched + ' posts'); }
+              else console.log('  -> FAILED');
+              await new Promise(r => setTimeout(r, 1000));
+            }
+            const payload = JSON.stringify({ subreddits, fetchedAt: new Date().toISOString() });
+
+            // Write to Upstash Redis via REST API
+            const res = await fetch(process.env.UPSTASH_REDIS_REST_URL + '/set/reddit-data/' + encodeURIComponent(payload) + '?EX=3600', {
+              headers: { Authorization: 'Bearer ' + process.env.UPSTASH_REDIS_REST_TOKEN },
+            });
+            const result = await res.json();
+            console.log('Redis:', result);
+          }
+          main().catch(e => { console.error(e); process.exit(1); });
+          "
+        env:
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+
+      - name: Trigger Google Trends cron on Vercel
         run: |
-          curl -s -o /dev/null -w "trends: %{http_code}\n" \
+          curl -s -w "\ntrends: %{http_code}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             "${{ secrets.SITE_URL }}/api/cron/trends"

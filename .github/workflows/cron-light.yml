@@ -2,15 +2,57 @@ name: Light cron (Reddit live stats)
 
 on:
   schedule:
-    - cron: '*/5 * * * *' # every 5 minutes
-  workflow_dispatch: # manual trigger
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
 
 jobs:
-  ping:
+  fetch-stats:
     runs-on: ubuntu-latest
     steps:
-      - name: Reddit live stats
+      - name: Fetch Reddit live stats and update Upstash
         run: |
-          curl -s -o /dev/null -w "%{http_code}" \
-            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            "${{ secrets.SITE_URL }}/api/cron/reddit-light"
+          node -e "
+          const SUBREDDITS = ['layoffs', 'recruitinghell', 'overemployed'];
+          const headers = { 'User-Agent': 'web:layoff-trend:v1.0 (by /u/layoff-trend-bot)' };
+          const REDIS_URL = process.env.UPSTASH_REDIS_REST_URL;
+          const REDIS_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
+
+          async function main() {
+            // Fetch live stats
+            const stats = await Promise.all(SUBREDDITS.map(async name => {
+              const res = await fetch('https://www.reddit.com/r/' + name + '/about.json', { headers });
+              if (!res.ok) return null;
+              const data = (await res.json()).data;
+              return { name: 'r/' + name, subscribers: data.subscribers, activeUsers: data.accounts_active };
+            }));
+            const liveStats = stats.filter(Boolean);
+            console.log('Live stats:', liveStats.map(s => s.name + ': ' + s.activeUsers + ' online').join(', '));
+
+            // Get existing data from Redis
+            const getRes = await fetch(REDIS_URL + '/get/reddit-data', {
+              headers: { Authorization: 'Bearer ' + REDIS_TOKEN },
+            });
+            const getResult = await getRes.json();
+            if (!getResult.result) { console.log('No existing data, skipping merge'); return; }
+
+            const data = typeof getResult.result === 'string' ? JSON.parse(getResult.result) : getResult.result;
+            data.subreddits = data.subreddits.map(sub => {
+              const live = liveStats.find(l => l.name === sub.name);
+              if (live) { sub.subscribers = live.subscribers; sub.activeUsers = live.activeUsers; }
+              return sub;
+            });
+            data.liveUpdatedAt = new Date().toISOString();
+
+            // Write back
+            const payload = JSON.stringify(data);
+            const setRes = await fetch(REDIS_URL + '/set/reddit-data/' + encodeURIComponent(payload) + '?EX=3600', {
+              headers: { Authorization: 'Bearer ' + REDIS_TOKEN },
+            });
+            const setResult = await setRes.json();
+            console.log('Redis:', setResult);
+          }
+          main().catch(e => { console.error(e); process.exit(1); });
+          "
+        env:
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
