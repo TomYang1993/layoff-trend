@@ -308,13 +308,13 @@ export default function Home() {
         <h2>About the Layoff Trend Index</h2>
         <p>
           This dashboard combines multiple real-time signals to track layoff activity across the tech industry.
-          By monitoring LeetCode interview prep activity, Google search trends for "layoff", and Reddit community engagement,
+          By monitoring LeetCode interview prep activity and Google search trends for "layoff",
           you get a multi-dimensional view of the job market's health.
         </p>
 
         <div className="faq">
           <details>
-            <summary>How does the LeetCode index indicate layoffs?</summary>
+            <summary>How does LeetCode activity indicate layoffs?</summary>
             <p>
               When layoffs increase, more engineers start preparing for interviews, driving up active users
               on popular LeetCode problems like Two Sum. Spikes in LeetCode activity often correlate with
@@ -332,19 +332,28 @@ export default function Home() {
           </details>
 
           <details>
-            <summary>Why track r/layoffs?</summary>
+            <summary>What is Two Sum and why is it the most popular LeetCode problem?</summary>
             <p>
-              Reddit's r/layoffs subreddit is where affected workers share real-time reports of layoffs
-              before they hit the news. Spikes in subscriber growth and post activity are leading indicators
-              of layoff waves in the tech industry and beyond.
+              Two Sum is LeetCode Problem #1. Given an array of integers and a target, find two numbers that
+              add up to the target. It's the default starting point for coding interview prep and consistently
+              has the highest online user count — often over 2,000 concurrent solvers.
             </p>
           </details>
 
           <details>
             <summary>How often does the data update?</summary>
             <p>
-              LeetCode counters update every 10 seconds via WebSocket. Google Trends data refreshes hourly.
-              Reddit data refreshes every 5 minutes. All data is fetched live — nothing is pre-recorded.
+              LeetCode counters update every 10 seconds via a live WebSocket connection.
+              Google Trends data refreshes hourly via a background job. All data is fetched live — nothing is pre-recorded.
+            </p>
+          </details>
+
+          <details>
+            <summary>Can I use this to predict layoffs?</summary>
+            <p>
+              This dashboard tracks signals that correlate with layoff activity, not predict it.
+              A spike in LeetCode users or Google searches for "layoff" may indicate that layoffs are happening
+              or that workers are anxious about job security. It's a sentiment indicator, not a forecast.
             </p>
           </details>
         </div>
