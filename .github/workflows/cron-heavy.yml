@@ -1,0 +1,22 @@
+name: Heavy cron (Reddit + Google Trends)
+
+on:
+  schedule:
+    - cron: '*/30 * * * *' # every 30 minutes
+  workflow_dispatch: # manual trigger
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reddit full data
+        run: |
+          curl -s -o /dev/null -w "reddit: %{http_code}\n" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.SITE_URL }}/api/cron/reddit"
+
+      - name: Google Trends
+        run: |
+          curl -s -o /dev/null -w "trends: %{http_code}\n" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "${{ secrets.SITE_URL }}/api/cron/trends"

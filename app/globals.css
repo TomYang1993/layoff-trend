@@ -12,67 +12,149 @@ body {
 }
 
 .container {
-  text-align: center;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
 }
 
-.title {
-  font-size: 1.2rem;
-  color: #888;
-  margin-bottom: 0.5rem;
+/* Page header */
+.page-title {
+  font-size: 1.6rem;
+  color: #eee;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: 0.3rem;
+}
+
+.page-subtitle {
+  text-align: center;
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 2.5rem;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section-title {
+  font-size: 0.85rem;
+  color: #555;
   text-transform: uppercase;
   letter-spacing: 2px;
+  margin-bottom: 1rem;
+  padding-left: 4px;
 }
 
-.problem-name {
-  font-size: 2rem;
+/* Cards */
+.cards {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  background: #16162a;
+  border: 1px solid #2a2a4a;
+  border-radius: 12px;
+  padding: 1.5rem;
+  flex: 1;
+  min-width: 320px;
+}
+
+.card-header {
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #ffa116;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
+.card-error {
+  color: #ef4743;
+  font-size: 0.85rem;
+  padding: 1rem 0;
+}
+
+.card-loading {
+  color: #555;
+  font-size: 0.9rem;
+  padding: 2rem 0;
+  text-align: center;
+}
+
+.status-footer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #555;
+  padding-top: 0.5rem;
+}
+
+/* Count */
 .count-wrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
 .count {
-  font-size: 8rem;
+  font-size: clamp(2rem, 8vw, 4.5rem);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   line-height: 1;
   transition: color 0.3s;
-}
-
-.count.connected {
-  color: #00b8a3;
-}
-
-.count.disconnected {
-  color: #ef4743;
-}
-
-.count.connecting {
-  color: #ffa116;
+  overflow-wrap: break-word;
+  word-break: break-all;
 }
 
 .label {
-  font-size: 1.1rem;
-  color: #888;
-  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: 0.3rem;
 }
 
+/* Stats row */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+  padding: 0.75rem 0;
+  border-top: 1px solid #222240;
+  border-bottom: 1px solid #222240;
+}
+
+.stat {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #ccc;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: #555;
+  margin-top: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Status */
 .status {
-  display: inline-flex;
+  display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  font-size: 0.85rem;
-  color: #666;
-  margin-top: 1.5rem;
+  font-size: 0.8rem;
+  color: #555;
+  margin-top: 1rem;
 }
 
 .dot {
@@ -80,21 +162,7 @@ body {
   height: 8px;
   border-radius: 50%;
   display: inline-block;
-}
-
-.dot.connected {
-  background: #00b8a3;
-  box-shadow: 0 0 6px #00b8a3;
-  animation: pulse 2s infinite;
-}
-
-.dot.disconnected {
-  background: #ef4743;
-}
-
-.dot.connecting {
-  background: #ffa116;
-  animation: pulse 1s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
@@ -102,12 +170,10 @@ body {
   50% { opacity: 0.4; }
 }
 
+/* Charts */
 .chart-wrapper {
-  margin-top: 2rem;
+  margin: 0.75rem 0;
   width: 100%;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .chart {
@@ -115,69 +181,91 @@ body {
   height: auto;
 }
 
-.chart-line {
-  fill: none;
-  stroke: #00b8a3;
-  stroke-width: 2;
-  stroke-linejoin: round;
-  stroke-linecap: round;
-}
-
-.chart-area {
-  fill: url(#areaGrad);
-  opacity: 0.3;
-}
-
-.chart-dot {
-  fill: #00b8a3;
-  filter: drop-shadow(0 0 4px #00b8a3);
-}
-
 .grid-line {
-  stroke: #333;
+  stroke: #2a2a40;
   stroke-width: 0.5;
   stroke-dasharray: 4 4;
 }
 
 .tick-label {
-  fill: #666;
+  fill: #555;
   font-size: 10px;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-.axis-label-x {
-  fill: #888;
-  font-size: 11px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  text-anchor: middle;
+/* Recent posts */
+.recent-posts {
+  margin-top: 0.75rem;
+  border-top: 1px solid #222240;
+  padding-top: 0.75rem;
 }
 
-.axis-label-y {
-  fill: #888;
-  font-size: 11px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  text-anchor: middle;
+.recent-posts-title {
+  font-size: 0.75rem;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
 }
 
+.recent-post {
+  display: block;
+  padding: 6px 0;
+  text-decoration: none;
+  border-bottom: 1px solid #1e1e38;
+  transition: background 0.15s;
+}
+
+.recent-post:hover {
+  background: #1e1e3a;
+}
+
+.post-title {
+  display: block;
+  font-size: 0.82rem;
+  color: #aaa;
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.post-meta {
+  font-size: 0.72rem;
+  color: #444;
+}
+
+/* SEO content */
 .seo-content {
-  margin-top: 4rem;
-  max-width: 640px;
-  text-align: left;
+  margin-top: 3rem;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
   color: #555;
   font-size: 0.9rem;
   line-height: 1.7;
 }
 
-.seo-content h1 {
-  font-size: 1.3rem;
+.seo-content h2 {
+  font-size: 1.2rem;
   color: #888;
   margin-bottom: 0.5rem;
+  text-align: center;
 }
 
 .seo-content p {
   margin-bottom: 0.75rem;
 }
 
+.seo-content code {
+  background: #252540;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 0.85rem;
+  color: #ffa116;
+}
+
+/* FAQ */
 .faq {
   margin-top: 1.5rem;
   display: flex;
@@ -220,7 +308,6 @@ body {
   font-size: 1.2rem;
   color: #666;
   flex-shrink: 0;
-  transition: transform 0.2s;
 }
 
 .faq details[open] summary::after {
@@ -239,10 +326,15 @@ body {
   line-height: 1.6;
 }
 
-.seo-content code {
-  background: #252540;
-  padding: 2px 6px;
-  border-radius: 3px;
-  font-size: 0.85rem;
-  color: #ffa116;
+/* Responsive */
+@media (max-width: 720px) {
+  .cards {
+    flex-direction: column;
+  }
+  .card {
+    min-width: unset;
+  }
+  .count {
+    font-size: 3.5rem;
+  }
 }
