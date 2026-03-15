@@ -295,12 +295,14 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Reddit section disabled — Reddit blocks cloud IPs
       <section className="section">
         <h2 className="section-title">Reddit Pulse</h2>
         <div className="cards">
           <RedditSection />
         </div>
       </section>
+      */}
 
       <article className="seo-content">
         <h2>About the Layoff Trend Index</h2>
