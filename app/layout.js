@@ -1,19 +1,20 @@
 import { Analytics } from '@vercel/analytics/next'
 
 export const metadata = {
-  title: 'LeetCode Two Sum Live Counter | How Many People Are Solving Two Sum Right Now?',
-  description: 'See how many people are solving LeetCode\'s Two Sum problem in real time. Live WebSocket counter with historical chart updated every 10 seconds. The most popular coding interview question tracked live.',
-  keywords: ['leetcode', 'two sum', 'live counter', 'online users', 'coding interview', 'leetcode statistics', 'leetcode live', 'leetcode online count', 'how many people solving leetcode'],
+  metadataBase: new URL('https://layoff-trend.vercel.app'),
+  title: 'Layoff Trend Index | Real-Time Tech Layoff Prediction',
+  description: 'Multi-signal dashboard tracking layoff activity across the tech industry in real time. Combines LeetCode interview prep activity and Google Trends data.',
+  keywords: ['layoff trend', 'tech layoffs', 'layoff tracker', 'leetcode activity', 'job market', 'layoff dashboard', 'real-time layoff data', 'tech industry layoffs'],
   openGraph: {
-    title: 'LeetCode Two Sum — Live Online Counter',
-    description: 'Real-time count of people solving the #1 most popular LeetCode problem right now. Updated every 10 seconds via WebSocket.',
+    title: 'Layoff Trend Index — Real-Time Tech Layoff Prediction',
+    description: 'Track layoff activity across the tech industry with live LeetCode interview prep signals and Google Trends data.',
     type: 'website',
-    siteName: 'LeetCode Live Counter',
+    siteName: 'Layoff Trend Index',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'LeetCode Two Sum — Live Online Counter',
-    description: 'See how many people are solving Two Sum right now. Live real-time counter.',
+    title: 'Layoff Trend Index — Real-Time Tech Layoff Prediction',
+    description: 'Multi-signal dashboard tracking tech layoffs in real time via LeetCode activity and Google Trends.',
   },
   robots: {
     index: true,
@@ -34,16 +35,16 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify({
               '@context': 'https://schema.org',
               '@type': 'WebApplication',
-              name: 'LeetCode Two Sum Live Counter',
-              description: 'Real-time tracker showing how many people are currently solving the Two Sum problem on LeetCode. Updated every 10 seconds via WebSocket connection.',
-              applicationCategory: 'DeveloperApplication',
+              name: 'Layoff Trend Index',
+              description: 'Multi-signal dashboard tracking layoff activity across the tech industry in real time. Combines LeetCode interview prep activity and Google Trends data.',
+              applicationCategory: 'BusinessApplication',
               operatingSystem: 'Web',
               offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
               featureList: [
-                'Real-time online user count for LeetCode Two Sum',
+                'Real-time LeetCode interview prep activity tracking',
+                'Google Trends "layoff" search interest monitoring',
                 'Live WebSocket updates every 10 seconds',
-                'Historical line chart of online users',
-                'Auto-reconnect on connection loss',
+                'Multi-signal layoff trend analysis',
               ],
             }),
           }}
@@ -57,34 +58,34 @@ export default function RootLayout({ children }) {
               mainEntity: [
                 {
                   '@type': 'Question',
-                  name: 'How many people are solving LeetCode Two Sum right now?',
+                  name: 'How does LeetCode activity indicate layoffs?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'The number varies throughout the day. Two Sum is the most popular LeetCode problem, typically showing hundreds to thousands of concurrent solvers. Visit the live counter to see the exact real-time count.',
+                    text: 'When layoffs increase, more engineers start preparing for interviews, driving up active users on popular LeetCode problems like Two Sum. Spikes in LeetCode activity often correlate with major layoff announcements from big tech companies.',
                   },
                 },
                 {
                   '@type': 'Question',
-                  name: 'How does the LeetCode live counter work?',
+                  name: 'What does the Google Trends score mean?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'The counter connects directly to LeetCode\'s collaboration WebSocket server, which broadcasts the number of active users on each problem page. The count updates approximately every 10 seconds.',
+                    text: 'Google Trends scores range from 0 to 100, representing search interest relative to the peak in the selected time period. A score of 100 means peak popularity. Rising "layoff" searches often precede or coincide with major layoff waves.',
                   },
                 },
                 {
                   '@type': 'Question',
-                  name: 'What is Two Sum on LeetCode?',
+                  name: 'How often does the data update?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Two Sum is LeetCode Problem #1 and the most popular coding interview question. Given an array of integers and a target, you must find two numbers that add up to the target. It is often the first problem new programmers solve when preparing for technical interviews.',
+                    text: 'LeetCode counters update every 10 seconds via a live WebSocket connection. Google Trends data refreshes hourly. All data is fetched live — nothing is pre-recorded.',
                   },
                 },
                 {
                   '@type': 'Question',
-                  name: 'Why is Two Sum the most popular LeetCode problem?',
+                  name: 'Can I use this to predict layoffs?',
                   acceptedAnswer: {
                     '@type': 'Answer',
-                    text: 'Two Sum is problem #1 on LeetCode, making it the default starting point. It teaches fundamental concepts like hash maps and array traversal, making it ideal for beginners and a common warm-up for experienced engineers preparing for interviews at companies like Google, Meta, and Amazon.',
+                    text: 'This dashboard tracks signals that correlate with layoff activity. A spike in LeetCode users or Google searches for "layoff" may indicate that layoffs are happening or that workers are anxious about job security. It is a real-time sentiment indicator based on multiple data signals.',
                   },
                 },
               ],
